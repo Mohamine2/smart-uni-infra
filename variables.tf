@@ -15,3 +15,9 @@ variable "instance_type" {
   type        = string
   default     = "t3.micro"
 }
+
+variable "instance_volume_size" {
+  type        = number
+  default     = 20
+  description = "EBS volume size (GB) for the EC2 instance"
+}
