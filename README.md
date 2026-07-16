@@ -14,7 +14,7 @@ The infrastructure is built on AWS using Terraform to guarantee standard, repeat
 ### 🛡️ Network and Security Isolation
 * **Virtual Private Cloud (VPC)**: Custom isolated network setup `10.0.0.0/16` to run computing resources.
 * **Public Subnet**: A single public tier `10.0.1.0/24` with automatic public IP translation where the instance is deployed.
-* **Security Groups**: Provisions an Ubuntu 24.04 LTS server `t3.small by default` with an automated startup script that installs Docker and Docker Compose.
+* **Security Groups**: Provisions an Ubuntu 24.04 LTS server `t3.small` by default with an automated startup script that installs Docker and Docker Compose.
 * **AWS Systems Manager (SSM)**: Configured via IAM roles and policies `AmazonSSMManagedInstanceCore` to allow safe SSH-less access to the cloud environment without opening public management ports.
 
 ---
