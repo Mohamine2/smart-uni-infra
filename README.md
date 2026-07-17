@@ -110,9 +110,9 @@ terraform destroy
 <a name="roadmap"></a>
 ## 🧭 Known Limitations & Roadmap
 Documented transparently so the current state isn't confused with the target design:
-* No private subnet / no multi-tier network isolation yet — MySQL runs as a container on the same host as the app, isolated only via the Docker bridge network.
-* No managed database (RDS) — MySQL persistence relies on an EBS-backed Docker volume on a single instance (no automated backups, no multi-AZ).
+* No private subnet / no multi-tier network isolation yet, MySQL runs as a container on the same host as the app, isolated only via the Docker bridge network.
+* No managed database (RDS), MySQL persistence relies on an EBS-backed Docker volume on a single instance (no automated backups, no multi-AZ).
 * Port 443 is open in the Security Group but Nginx does not yet terminate TLS (no certificate configured).
-* Single EC2 instance — no load balancer, no auto-scaling, no failover.
+* Single EC2 instance, no load balancer, no auto-scaling, no failover.
 
 Planned improvements: move MySQL to RDS in a private subnet, add a TLS certificate, and re-evaluate network segmentation.
