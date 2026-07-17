@@ -11,11 +11,22 @@ The core application code is maintained in a decoupled, source-only repository:
 
 The infrastructure is built on AWS using Terraform to guarantee standard, repeatable, and secure environments.
 
-### 🛡️ Network and Security Isolation
+Visual layout of the infrastructure components and network boundaries:
+
+<img width="810" height="1051" alt="Smart Uni Infrastructure Architecture Diagram" src="https://github.com/user-attachments/assets/742cdb54-abd8-455c-af07-b60851053974" />
+
+### 🖧 Network
+
 * **Virtual Private Cloud (VPC)**: Custom isolated network setup `10.0.0.0/16` to run computing resources.
 * **Public Subnet**: A single public tier `10.0.1.0/24` with automatic public IP translation where the instance is deployed.
-* **Security Groups**: Provisions an Ubuntu 24.04 LTS server `t3.small` by default with an automated startup script that installs Docker and Docker Compose.
-* **AWS Systems Manager (SSM)**: Configured via IAM roles and policies `AmazonSSMManagedInstanceCore` to allow safe SSH-less access to the cloud environment without opening public management ports.
+* Current topology is single-tier: no private subnet, NAT Gateway, or managed database (RDS) is provisioned. The application stack (Nginx, Django, MySQL) runs as three Docker containers on the same EC2 host. Database isolation is therefore enforced at the Docker network level (`smart_network`, internal bridge — MySQL is never exposed outside the host), not at the AWS network-tier level.
+* A private-subnet, multi-tier layout (e.g. RDS in an isolated subnet) is a natural next step but is not implemented yet, see Roadmap.
+  
+### 🛡️ Security
+
+* **Security Groups**: ingress restricted to ports 80 (HTTP) and 443 (HTTPS), open to 0.0.0.0/0; egress unrestricted (required for Docker Hub pulls and package updates). **No SSH port (22) is ever opened.**
+* ⚠️ Port 443 is currently open at the network level but not yet used: the Nginx configuration only listens on port 80, no TLS certificate is configured. This is a known gap, HTTPS is not yet actively configured.
+* **AWS IAM + Systems Manager (SSM)**: Configured via IAM roles and policies `AmazonSSMManagedInstanceCore` to allow safe SSH-less access to the cloud environment without opening public management ports.
 
 ---
 
@@ -93,3 +104,12 @@ terraform destroy
 * **Zero Public Management Ports:** No raw SSH ports (Port 22) are exposed to the wild internet; environment access leverages native AWS secure tunneling (Systems Manager).
 
 * **Network Segmentation:** The instance only accepts web traffic (HTTP/HTTPS), actively dropping all other unauthorized external requests.
+
+## 🧭 Known Limitations & Roadmap
+Documented transparently so the current state isn't confused with the target design:
+* No private subnet / no multi-tier network isolation yet — MySQL runs as a container on the same host as the app, isolated only via the Docker bridge network.
+* No managed database (RDS) — MySQL persistence relies on an EBS-backed Docker volume on a single instance (no automated backups, no multi-AZ).
+* Port 443 is open in the Security Group but Nginx does not yet terminate TLS (no certificate configured).
+* Single EC2 instance — no load balancer, no auto-scaling, no failover.
+
+Planned improvements: move MySQL to RDS in a private subnet, add a TLS certificate, and re-evaluate network segmentation.
