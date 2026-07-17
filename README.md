@@ -20,7 +20,7 @@ Visual layout of the infrastructure components and network boundaries:
 * **Virtual Private Cloud (VPC)**: Custom isolated network setup `10.0.0.0/16` to run computing resources.
 * **Public Subnet**: A single public tier `10.0.1.0/24` with automatic public IP translation where the instance is deployed.
 * Current topology is single-tier: no private subnet, NAT Gateway, or managed database (RDS) is provisioned. The application stack (Nginx, Django, MySQL) runs as three Docker containers on the same EC2 host. Database isolation is therefore enforced at the Docker network level (`smart_network`, internal bridge — MySQL is never exposed outside the host), not at the AWS network-tier level.
-* A private-subnet, multi-tier layout (e.g. RDS in an isolated subnet) is a natural next step but is not implemented yet, see [Roadmap](#known-limitations--roadmap).
+* A private-subnet, multi-tier layout (e.g. RDS in an isolated subnet) is a natural next step but is not implemented yet, see [Roadmap](#roadmap).
   
 ### 🛡️ Security
 
@@ -107,6 +107,7 @@ terraform destroy
 
 ---
 
+<a name="roadmap"></a>
 ## 🧭 Known Limitations & Roadmap
 Documented transparently so the current state isn't confused with the target design:
 * No private subnet / no multi-tier network isolation yet — MySQL runs as a container on the same host as the app, isolated only via the Docker bridge network.
