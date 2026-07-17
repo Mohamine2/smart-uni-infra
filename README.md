@@ -105,6 +105,8 @@ terraform destroy
 
 * **Network Segmentation:** The instance only accepts web traffic (HTTP/HTTPS), actively dropping all other unauthorized external requests.
 
+---
+
 ## 🧭 Known Limitations & Roadmap
 Documented transparently so the current state isn't confused with the target design:
 * No private subnet / no multi-tier network isolation yet — MySQL runs as a container on the same host as the app, isolated only via the Docker bridge network.
