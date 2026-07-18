@@ -13,7 +13,8 @@ The infrastructure is built on AWS using Terraform to guarantee standard, repeat
 
 Visual layout of the infrastructure components and network boundaries:
 
-<img width="810" height="1051" alt="Smart Uni Infrastructure Architecture Diagram" src="https://github.com/user-attachments/assets/742cdb54-abd8-455c-af07-b60851053974" />
+<img width="810" height="1051" alt="Smart Uni Infrastructure Architecture Diagram" src="https://github.com/user-attachments/assets/fbf8c3be-c7bc-44ec-9f45-584c8d90fffd" />
+
 
 ### 🖧 Network
 
