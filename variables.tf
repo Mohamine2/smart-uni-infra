@@ -13,7 +13,7 @@ variable "aws_region" {
 variable "instance_type" {
   description = "EC2 Instance Type (Free Tier)"
   type        = string
-  default     = "t3.micro"
+  default     = "t3.small"
 }
 
 variable "instance_volume_size" {
