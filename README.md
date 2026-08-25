@@ -13,7 +13,7 @@ The infrastructure is built on AWS using Terraform to guarantee standard, repeat
 
 Visual layout of the infrastructure components and network boundaries:
 
-<img width="850" height="1100" alt="image" src="https://github.com/user-attachments/assets/3c98d07c-37e4-429b-ad53-80efc871e920" />
+<img width="850" height="1100" alt="image" src="https://github.com/user-attachments/assets/17a9e002-e98c-47c9-b1cf-ab56a1b7aed9" />
 
 ### 🖧 Network
 
@@ -48,13 +48,27 @@ The workflow `.github/workflows/cd-deploy.yml` is triggered automatically via `r
 ## 📁 Repository Structure
 
 ```text
-├── .terraform.lock.hcl  # Locks provider plugin versions
-├── main.tf              # Entry point establishing global resources & orchestrations
-├── network.tf           # Provisions VPC, subnets, route tables, and gateways
-├── security.tf          # Configures AWS Security Groups and IAM permissions
-├── providers.tf         # Declares cloud providers (AWS) and required versions
-├── variables.tf         # Defines configurable environment arguments
-└── outputs.tf           # Declares values to expose after deployment
+smart-uni-infra/
+├── .github/
+│   └── workflows/
+│       └── cd-deploy.yml          # CD Pipeline (AWS SSM)
+│
+├── docker/
+│   ├── docker-compose.prod.yml    # (Nginx, DRF API, MySQL)
+│   └── nginx/
+│       └── default.conf           # Reverse proxy config & staticfiles
+│
+├── terraform/                     
+│   ├── main.tf                    # Entry point establishing global resources & orchestrations
+│   ├── network.tf                 # Provisions VPC, subnets, route tables, and gateways
+│   ├── security.tf                # Configures AWS Security Groups and IAM permissions
+│   ├── providers.tf               # Declares cloud providers (AWS) and required versions
+│   ├── variables.tf               # Defines configurable environment arguments
+│   └── outputs.tf                 # Declares values to expose after deployment
+│
+├── .terraform.lock.hcl            # Locks provider plugin versions
+├── .gitignore
+└── README.md
 ```
 
 ---
