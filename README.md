@@ -32,12 +32,12 @@ Visual layout of the infrastructure components and network boundaries:
 
 ## 🔄 CI/CD & Deployment Strategy
 
-### 🚀 Automated VM Configuration
-The project includes an automated deployment pipeline linked directly to the application repository. **On every code push** to the `Smart-Uni` source repository, the pipeline automatically syncs with the AWS virtual machine to:
+### Automated Continuous Deployment (GitHub Actions & AWS SSM)
+The workflow `.github/workflows/cd-deploy.yml` is triggered automatically via `repository_dispatch` from `smart-uni-api` on successful CI completion (or manually via `workflow_dispatch`):
 
-    1. Re-create the required directory trees and system layouts.
-    2. Install and update all configuration dependencies.
-    3. Keep the runtime environment strictly aligned with the latest commit.
+- **Targeted AWS Authentication:** Authenticates securely via dedicated IAM credentials scoped to Amazon EC2 Systems Manager execution.
+- **Agentless Execution (AWS SSM):** Transmits production configurations (`compose.prod.yaml`, Nginx reverse proxy configs, and environment variables) to the targeted EC2 instance without opening inbound SSH ports.
+- **Zero-Downtime Container Lifecycle:** Pulls the newly verified Docker Hub image artifact and executes `docker compose up -d --force-recreate` to refresh production services.
 
 ### 🔒 Access Control & Cost Optimization
 * **Restricted Deployment**: Due to access token restrictions and infrastructure security policies, **only the repository owner (myself) has the clearance to deploy and trigger updates** onto the environment.
