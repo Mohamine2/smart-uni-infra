@@ -1,18 +1,17 @@
 services:
   # --- 1. DATABASE ---
   db:
-    image: mysql:8.0
+    image: postgres:16-alpine
     container_name: smart_uni_db
     restart: always
     environment:
-      MYSQL_DATABASE: residence_connectee_db
-      MYSQL_USER: uni_user
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-residence_connectee_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d residence_connectee_db"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -36,9 +35,9 @@ services:
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-*}
       - DEBUG=False
       - DB_HOST=db
-      - DB_PORT=3306
+      - DB_PORT=5432
       - DB_NAME=${DB_NAME:-residence_connectee_db}
-      - DB_USER=${DB_USER:-uni_user}
+      - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD}
     expose:
       - "8000"
@@ -65,7 +64,7 @@ services:
       - smart_network
 
 volumes:
-  mysql_data:
+  postgres_data:
   static_volume:
   media_volume:
 
