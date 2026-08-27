@@ -13,7 +13,7 @@ The infrastructure is built on AWS using Terraform to guarantee standard, repeat
 
 Visual layout of the infrastructure components and network boundaries:
 
-<img width="850" height="1100" alt="image" src="https://github.com/user-attachments/assets/17a9e002-e98c-47c9-b1cf-ab56a1b7aed9" />
+<img width="851" height="1100" alt="image" src="https://github.com/user-attachments/assets/d26be3a8-2972-40c0-b3c6-dedf024584da" />
 
 ### 🖧 Network
 
@@ -124,9 +124,9 @@ terraform destroy
 <a name="roadmap"></a>
 ## 🧭 Known Limitations & Roadmap
 Documented transparently so the current state isn't confused with the target design:
-* No private subnet / no multi-tier network isolation yet, MySQL runs as a container on the same host as the app, isolated only via the Docker bridge network.
-* No managed database (RDS), MySQL persistence relies on an EBS-backed Docker volume on a single instance (no automated backups, no multi-AZ).
+* No private subnet / no multi-tier network isolation yet, PostgreSQL runs as a container on the same host as the app, isolated only via the Docker bridge network.
+* No managed database (RDS), PostgreSQL persistence relies on an EBS-backed Docker volume on a single instance (no automated backups, no multi-AZ).
 * Port 443 is open in the Security Group but Nginx does not yet terminate TLS (no certificate configured).
 * Single EC2 instance, no load balancer, no auto-scaling, no failover.
 
-Planned improvements: move MySQL to RDS in a private subnet, add a TLS certificate, and re-evaluate network segmentation.
+Planned improvements: move PostgreSQL to RDS in a private subnet, add a TLS certificate, and re-evaluate network segmentation.
