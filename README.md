@@ -3,7 +3,7 @@
 This repository manages the cloud infrastructure and automated provisioning for the **Smart-Uni** university residence management system.
 
 The core application code is maintained in a decoupled, source-only repository:
-**[Smart-Uni Application Code](https://github.com/Mohamine2/Smart-Uni)**
+**[Smart-Uni API](https://github.com/Mohamine2/smart-uni-api)**
 
 ---
 
