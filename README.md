@@ -1,5 +1,11 @@
 # Smart-Uni Infrastructure (AWS + Terraform) 🏗️
 
+[![CD Pipeline](https://github.com/Mohamine2/smart-uni-infra/actions/workflows/cd-deploy.yml/badge.svg)](https://github.com/Mohamine2/smart-uni-infra/actions/workflows/cd-deploy.yml)
+![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazon-web-services&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white)
+
 This repository manages the cloud infrastructure and automated provisioning for the **Smart-Uni** university residence management system.
 
 The core application code is maintained in a decoupled, source-only repository:
@@ -19,7 +25,7 @@ Visual layout of the infrastructure components and network boundaries:
 
 * **Virtual Private Cloud (VPC)**: Custom isolated network setup `10.0.0.0/16` to run computing resources.
 * **Public Subnet**: A single public tier `10.0.1.0/24` with automatic public IP translation where the instance is deployed.
-* Current topology is single-tier: no private subnet, NAT Gateway, or managed database (RDS) is provisioned. The application stack (Nginx, Django, MySQL) runs as three Docker containers on the same EC2 host. Database isolation is therefore enforced at the Docker network level (`smart_network`, internal bridge — MySQL is never exposed outside the host), not at the AWS network-tier level.
+* Current topology is single-tier: no private subnet, NAT Gateway, or managed database (RDS) is provisioned. The application stack (Nginx, Django, PostgreSQL) runs as three Docker containers on the same EC2 host. Database isolation is therefore enforced at the Docker network level (`smart_network`, internal bridge - PostgreSQL is never exposed outside the host), not at the AWS network-tier level.
 * A private-subnet, multi-tier layout (e.g. RDS in an isolated subnet) is a natural next step but is not implemented yet, see [Roadmap](#roadmap).
   
 ### 🛡️ Security
@@ -54,7 +60,7 @@ smart-uni-infra/
 │       └── cd-deploy.yml          # CD Pipeline (AWS SSM)
 │
 ├── docker/
-│   ├── docker-compose.prod.yml    # (Nginx, DRF API, MySQL)
+│   ├── docker-compose.prod.yml    # (Nginx, DRF API, PostgreSQL)
 │   └── nginx/
 │       └── default.conf           # Reverse proxy config & staticfiles
 │
